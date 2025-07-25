@@ -12,6 +12,7 @@ struct BirthdayAppApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+            
         }
     }
 }
