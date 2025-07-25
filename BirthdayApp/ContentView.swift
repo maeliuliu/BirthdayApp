@@ -9,12 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var friends:[Friend] = [Friend(name: "Joan", birthday: .now), Friend(name:"Sienna", birthday: .now)]
+    @State private var newName = ""
+    @State private var newBirthday = Date.now
     
     var body: some View {
         NavigationStack{
             List(friends, id:\.name){
                 friend in
                 HStack{
+                    
                     Text(friend.name)
                     Spacer()
                     Text(friend.birthday, format: .dateTime.month(.wide).day().year())
@@ -22,7 +25,26 @@ struct ContentView: View {
                 
             }
             .navigationTitle("Birthdays")
+            .safeAreaInset(edge: .bottom){
+                VStack(alignment:.center, spacing:20){
+                    Text("New Birthday")
+                        .font(.headline)
+                    DatePicker(selection: $newBirthday, in: Date.distantPast ... Date.now, displayedComponents: .date){
+                        TextField("Name", text: $newName)
+                    }
+                    
+                    Button("Save"){
+                        let newFriend = Friend(name: newName, birthday: newBirthday)
+                        friends.append(newFriend)
+                    }
+                    .bold()
+                }
+                
+                .background(.bar)
+            }
+            
             .padding()
+            
         }
     }
 }
